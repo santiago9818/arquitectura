@@ -1,0 +1,2 @@
+# arquitectura
+emu8086
