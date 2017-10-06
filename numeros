@@ -1,0 +1,65 @@
+
+include 'emu8086.inc'
+
+ORG    100h
+
+LEA    SI, msg1       ; ask for the number
+CALL   print_string   ;
+CALL   scan_num       ; get number in CX.
+
+MOV    AX, CX
+mov bl,2
+mul bl
+mov cl,5 
+mov dl,10 
+
+
+  
+CALL   pthis
+DB  13, 10, 'su numero multiplicado por 2 es ', 0
+
+CALL   print_num
+add ax,4  
+
+call pthis     
+DB  13, 10, 'su numero sumado por 4 es   ', 0
+
+CALL   print_num
+mul cl  
+call pthis     
+DB  13, 10, 'su numero multiplicado por 5 es    ', 0
+
+CALL   print_num 
+add ax,12 
+call pthis     
+DB  13, 10, 'su numero sumado 12 es    ', 0
+
+CALL   print_num
+mul dl  
+call pthis     
+DB  13, 10, 'su numero multiplicado por 10 es    ', 0
+
+CALL   print_num
+sub ax, 320  
+call pthis     
+DB  13, 10, 'su numero restado en 320 es    ', 0
+
+CALL   print_num
+MOV  BL,100
+DIV  BL  
+call pthis     
+DB  13, 10, 'su numero dividido por 5 es    ', 0
+
+CALL   print_num
+ 
+RET                   
+
+msg1   DB  'Digite un numero de 2 cifras ', 0
+
+DEFINE_SCAN_NUM
+DEFINE_PRINT_STRING
+DEFINE_PRINT_NUM
+DEFINE_PRINT_NUM_UNS  
+DEFINE_PTHIS
+
+END   
