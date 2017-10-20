@@ -11,7 +11,9 @@ MOV    AX, CX
 mov bl,2
 mul bl
 mov cl,5 
-mov dl,10 
+mov dl,10
+TEXTO14 DB " ES PAR $"
+TEXTO15 DB " NO ES PAR $" 
 
 
   
@@ -51,6 +53,30 @@ call pthis
 DB  13, 10, 'su numero dividido por 5 es    ', 0
 
 CALL   print_num
+TEST AX, 1
+JNZ IMPAR
+
+
+
+
+
+
+PAR: 
+
+call pthis     
+DB  13, 10, 'EL NUMERO ES PAR    ', 0
+JMP SALIR    
+
+IMPAR:
+
+CALL   print_num
+call pthis     
+DB  13, 10, 'EL NUMERO ES IMPAR    ', 0
+JMP SALIR  
+
+CALL   print_num
+
+SALIR:
  
 RET                   
 
