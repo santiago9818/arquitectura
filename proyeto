@@ -1,0 +1,349 @@
+include 'emu8086.inc'
+
+org 100h
+
+LEA    SI, msg1       ; ask for the number
+CALL   print_string   ;
+CALL   scan_num       ;
+mov bx,cx
+
+ mov bl,2
+mul bl
+mov cl,5 
+mov dl,10
+TEXTO14 DB " ES PAR $"
+TEXTO15 DB " NO ES PAR $" 
+
+CALL   pthis
+DB  13, 10, 'su numero multiplicado por 2 es ', 0
+
+CALL   print_num
+add ax,4  
+
+call pthis     
+DB  13, 10, 'su numero sumado por 4 es   ', 0
+
+CALL   print_num
+mul cl  
+call pthis     
+DB  13, 10, 'su numero multiplicado por 5 es    ', 0
+
+CALL   print_num 
+add ax,12 
+call pthis     
+DB  13, 10, 'su numero sumado 12 es    ', 0
+
+CALL   print_num
+mul dl  
+call pthis     
+DB  13, 10, 'su numero multiplicado por 10 es    ', 0
+
+CALL   print_num
+sub ax, 320  
+call pthis     
+DB  13, 10, 'su numero restado en 320 es    ', 0
+
+CALL   print_num
+MOV  BL,100
+DIV  BL  
+call pthis     
+DB  13, 10, 'su numero dividido por 5 es    ', 0
+
+CALL   print_num
+TEST AX, 1
+JNZ IMPAR
+
+
+
+
+
+
+PAR: 
+
+call pthis     
+DB  13, 10, 'EL NUMERO ES PAR    ', 0
+   
+
+IMPAR:
+
+CALL   print_num
+call pthis     
+DB  13, 10, 'EL NUMERO ES IMPAR    ', 0
+  
+
+CALL   print_num
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+push ax
+push bx
+
+cmp bx,0
+jl NEGATIVO
+jg POSITIVO
+
+NEGATIVO:
+mov ax,1
+call pthis 
+DB 13,10,' su bit de signo es ;',0 
+call print_num
+jmp seguir  
+
+POSITIVO:
+mov ax,0
+call pthis 
+DB 13,10,' su bit de signo es ;',0 
+call print_num
+jmp seguir 
+
+seguir:  
+cmp bx,128
+jb seis
+cmp bx,256
+jb siete
+cmp bx,512
+jb ocho
+cmp bx,1024
+jb nueve
+
+seis:
+mov bx,6
+add bx,127
+jmp numocho 
+
+siete :
+mov bx,7
+add bx,127
+jmp numocho
+
+ocho :
+mov bx,8
+add bx,127
+jmp numocho
+
+nueve :
+mov bx,9
+add bx,127
+jmp numocho 
+
+numocho:  
+call pthis
+
+ DB 13,10,' su exponente de 8 bits es  ;',0 
+
+ mov cx,8
+ prints:mov ah,2
+        mov dx,'0',0
+        test bx,10000000b
+        jz zeros 
+        mov dx,'1',0
+zeros:int 21h        
+      shl bx,1
+      loop prints
+      
+   
+      
+MANTISA :
+call pthis
+DB 13,10,' su mantisa es;',0  
+
+
+pop bx
+cmp bx,128
+jb op1  
+cmp bx,256
+jb op2 
+cmp bx,512
+jb op3 
+cmp bx,1024
+jb op4
+
+op1:
+mov cx,6
+jmp tot1
+op2: 
+mov cx,7
+jmp tot2
+op3: 
+mov cx,8
+jmp tot3
+op4: 
+mov cx,9
+jmp tot4  
+
+ tot1:
+ 
+print:mov ah,2
+        mov dx,'0',0
+        test bx,100000b
+        jz zero 
+        mov dx,'1',0
+zero:int 21h        
+      shl bx,1
+      loop print
+      jmp tot
+      
+tot2:
+printa: mov ah,2
+        mov dx,'0',0
+        test bx,1000000b
+        jz zeroa 
+        mov dx,'1',0
+zeroa:int 21h        
+      shl bx,1
+      loop printa
+       jmp tot    
+
+tot3:
+printb: mov ah,2
+        mov dx,'0',0
+        test bx,10000000b
+        jz zerob 
+        mov dx,'1',0
+zerob:int 21h        
+      shl bx,1
+      loop printb
+       jmp tot
+       
+       
+tot4:
+printc: mov ah,2
+        mov dx,'0',0
+        test bx,100000000b
+        jz zeroc 
+        mov dx,'1',0
+zeroc:int 21h        
+      shl bx,1
+      loop printc
+       jmp tot
+       
+tot:
+pop ax
+cmp ax,0
+je cero
+
+cmp ax,1
+je one
+
+cmp ax,2
+je two
+
+cmp ax,3
+je three
+
+cmp ax,4
+je four
+
+cmp ax,5
+je five
+
+cmp ax,6
+je six                             
+
+
+cmp ax,7
+je seven
+
+
+cmp ax,8
+je EIGHT
+
+cmp ax,9
+je nine
+
+cero:
+
+call pthis
+DB '00000000000000 ',0
+jmp fin 
+
+
+one:
+
+call pthis
+DB '00011001100110 ',0
+jmp fin 
+
+
+two:
+
+call pthis
+DB '00110011001100 ',0
+jmp fin 
+
+
+three:
+
+call pthis
+DB '1001100110011 ',0
+jmp fin 
+
+
+four:
+
+call pthis
+DB '10011001100110 ',0
+jmp fin 
+
+
+five:
+
+call pthis
+DB '10000000000000 ',0
+jmp fin 
+
+
+
+six:
+
+call pthis
+DB '10011001100110 ',0
+jmp fin 
+
+
+seven:
+
+call pthis
+DB '10110011001100 ',0
+jmp fin 
+
+
+EIGHT:
+
+call pthis
+DB '11001100110011 ',0
+jmp fin 
+
+
+nine:
+
+call pthis
+DB '11100110011001',0
+  
+
+jmp fin 
+
+
+
+
+      
+RET                   
+                                               
+                                               
+msg1   DB  'Digite un numero de 3 cifras ', 0  
+
+
+DEFINE_SCAN_NUM
+DEFINE_PRINT_STRING
+DEFINE_PRINT_NUM
+DEFINE_PRINT_NUM_UNS  
+DEFINE_PTHIS  
+
+  fin:
+
+END   
