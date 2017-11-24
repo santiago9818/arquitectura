@@ -5,7 +5,7 @@ org 100h
 LEA    SI, msg1       ; ask for the number
 CALL   print_string   ;
 CALL   scan_num       ;
-mov bx,cx
+mov ax,cx
 
  mov bl,2
 mul bl
@@ -44,8 +44,8 @@ call pthis
 DB  13, 10, 'su numero restado en 320 es    ', 0
 
 CALL   print_num
-MOV  BL,100
-DIV  BL  
+
+DIV  cl  
 call pthis     
 DB  13, 10, 'su numero dividido por 5 es    ', 0
 
@@ -62,21 +62,19 @@ PAR:
 
 call pthis     
 DB  13, 10, 'EL NUMERO ES PAR    ', 0
-   
+jmp salir   
 
 IMPAR:
 
 CALL   print_num
 call pthis     
 DB  13, 10, 'EL NUMERO ES IMPAR    ', 0
-  
-
 CALL   print_num
  
+ salir:
  
  
- 
- 
+   mov bx,cx
  
  
  
@@ -113,33 +111,33 @@ jb nueve
 
 seis:
 mov bx,6
-add bx,127
+add bx,1023
 jmp numocho 
 
 siete :
 mov bx,7
-add bx,127
+add bx,1023
 jmp numocho
 
 ocho :
 mov bx,8
-add bx,127
+add bx,1023
 jmp numocho
 
 nueve :
 mov bx,9
-add bx,127
+add bx,1023
 jmp numocho 
 
 numocho:  
 call pthis
 
- DB 13,10,' su exponente de 8 bits es  ;',0 
-
- mov cx,8
+ DB 13,10,' su exponente de 11 bits es  ;',0 
+ mov bx, 1027
+ mov cx,12
  prints:mov ah,2
         mov dx,'0',0
-        test bx,10000000b
+        test bx,100000000000b
         jz zeros 
         mov dx,'1',0
 zeros:int 21h        
@@ -150,7 +148,8 @@ zeros:int 21h
       
 MANTISA :
 call pthis
-DB 13,10,' su mantisa es;',0  
+DB 13,10,' su mantisa es;',0   
+
 
 
 pop bx
@@ -160,7 +159,7 @@ cmp bx,256
 jb op2 
 cmp bx,512
 jb op3 
-cmp bx,1024
+cmp bx,1023
 jb op4
 
 op1:
@@ -220,8 +219,8 @@ printc: mov ah,2
 zeroc:int 21h        
       shl bx,1
       loop printc
-       jmp tot
-       
+       jmp tot   
+     
 tot:
 pop ax
 cmp ax,0
@@ -335,7 +334,7 @@ jmp fin
 RET                   
                                                
                                                
-msg1   DB  'Digite un numero de 3 cifras ', 0  
+msg1   DB  'Digite un numero de 2 cifras ', 0  
 
 
 DEFINE_SCAN_NUM
